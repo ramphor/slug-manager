@@ -1,6 +1,9 @@
 <?php
 namespace Ramphor\Slug\Manager;
 
+use Ramphor\Slug\Manager\Rewrite\PostRewrite;
+use Ramphor\Slug\Manager\Rewrite\TaxonomyRewrite;
+
 if (!defined('ABSPATH')) {
     exit('Are you cheating huh?');
 }
@@ -45,7 +48,21 @@ class Plugin
         register_activation_hook(RAMPHOR_SLUG_MANAGER_PLUGIN_FILE, [Installer::class, 'active']);
         register_deactivation_hook(RAMPHOR_SLUG_MANAGER_PLUGIN_FILE, [Installer::class, 'deactive']);
 
-        add_action('init', [$this, 'init']);
+        add_action('init', [$this, 'rewrite'], 99);
+        add_action('init', [$this, 'init'], 999);
+    }
+
+    public function rewrite()
+    {
+        if (empty($this->rewriteRules)) {
+            return;
+        }
+
+        $postRewrite = new PostRewrite(array_get($this->rewriteRules, 'post_types'));
+        $postRewrite->rewrite();
+
+        $taxomyRewrite = new TaxonomyRewrite(array_get($this->rewriteRules, 'taxonomies'));
+        $taxomyRewrite->rewrite();
     }
 
     public function init()
@@ -74,6 +91,41 @@ class Plugin
         );
     }
 
+    protected function convertUrlFormatToRegex($format)
+    {
+        $regex = str_replace(['/', '.'], ['\/', '\.'], $format);
+        $regex = preg_replace('/\%[^\%]+\%/', '[^\/]{1,}', $regex);
+
+        $regex = '/^' . $regex;
+
+        return $regex . '$/';
+    }
+
+    protected function generateURLRegexRules($rules)
+    {
+        // Post type
+        foreach (array_get($rules, 'post_types') as $post_type => $rule) {
+            if (!isset($rule['format'])) {
+                continue;
+            }
+
+            $rule['regex']     = $this->convertUrlFormatToRegex(array_get($rule, 'format'));
+            $rules['post_types'][$post_type] = $rule;
+        }
+
+        // Post type
+        foreach (array_get($rules, 'taxonomies') as $taxonomy => $rule) {
+            if (!isset($rule['format'])) {
+                continue;
+            }
+
+            $rule['regex']     = $this->convertUrlFormatToRegex(array_get($rule, 'format'));
+            $rules['taxonomies'][$taxonomy] = $rule;
+        }
+
+        return $rules;
+    }
+
 
     public function flushRewriteRules()
     {
@@ -82,7 +134,10 @@ class Plugin
 
             $this->rewriteRules['flushed'] = true;
 
-            $configWriter = new ConfigWriter(static::getRewriteRulesFilePath(), $this->rewriteRules);
+            $configWriter = new ConfigWriter(
+                static::getRewriteRulesFilePath(),
+                $this->generateURLRegexRules($this->rewriteRules)
+            );
             $configWriter->write();
         }
     }

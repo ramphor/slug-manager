@@ -46,6 +46,7 @@ class Installer
     {
         $postTypeRules = array();
         $postTypes = static::getPublicPostTypes();
+        $index = 0;
 
         foreach ($postTypes as $postType => $args) {
             $isRewrite = $args->rewrite !== false;
@@ -54,6 +55,7 @@ class Installer
                 'registered_slug' => $isRewrite ? array_get($args->rewrite, 'slug') : '',
                 'rewrite' => $isRewrite,
                 'format' => sprintf('%s/%s', $slug ? '/' . $slug : '', '%postname%'),
+                'priority' => $index,
             );
             $postTypeRules[$postType] = $rules;
         }
@@ -65,6 +67,7 @@ class Installer
     {
         $taxonomyRules = array();
         $taxonomies    = static::getPublicTaxonomies();
+        $index = 0;
 
         foreach ($taxonomies as $taxonomy => $args) {
             $isRewrite = $args->rewrite !== false;
@@ -73,6 +76,7 @@ class Installer
                 'registered_slug' => $isRewrite ? array_get($args->rewrite, 'slug') : '',
                 'rewrite' => $isRewrite,
                 'format' => sprintf('%s/%s', $slug ? '/' . $slug : '', '%slug%'),
+                'priority' => $index,
             );
             $taxonomyRules[$taxonomy] = $rules;
         }
