@@ -1,0 +1,50 @@
+{
+    "packages": [
+        {
+            "name": "jankx/helpers",
+            "version": "dev-master",
+            "version_normalized": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jankx/helpers.git",
+                "reference": "c09d54291f778eb5aaa84631417fefb48c20f133"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jankx/helpers/zipball/c09d54291f778eb5aaa84631417fefb48c20f133",
+                "reference": "c09d54291f778eb5aaa84631417fefb48c20f133",
+                "shasum": ""
+            },
+            "time": "2022-01-30T16:41:56+00:00",
+            "default-branch": true,
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "./loader.php"
+                ],
+                "psr-4": {
+                    "Jankx\\Helpers\\": "src/Helpers"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Puleeno Nguyen",
+                    "email": "puleeno@gmail.com"
+                }
+            ],
+            "description": "The helpers for Jankx Framework",
+            "support": {
+                "issues": "https://github.com/jankx/helpers/issues",
+                "source": "https://github.com/jankx/helpers/tree/master"
+            },
+            "install-path": "../jankx/helpers"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}

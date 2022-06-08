@@ -1,0 +1,22 @@
+{
+    "name": "jankx/helpers",
+    "description": "The helpers for Jankx Framework",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Puleeno Nguyen",
+            "email": "puleeno@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Jankx\\Helpers\\": "src/Helpers"
+        },
+        "files": [
+            "./loader.php"
+        ]
+    }
+}

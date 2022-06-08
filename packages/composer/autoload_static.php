@@ -6,10 +6,18 @@ namespace Composer\Autoload;
 
 class ComposerStaticInita46f9641ddc96c236c39c0c1aeb4d2d2
 {
+    public static $files = array (
+        'bdf78aadedcdffbd9264705d73f17eca' => __DIR__ . '/..' . '/jankx/helpers/loader.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'R' => 
         array (
             'Ramphor\\Slug\\Manager\\' => 21,
+        ),
+        'J' => 
+        array (
+            'Jankx\\Helpers\\' => 14,
         ),
     );
 
@@ -17,6 +25,10 @@ class ComposerStaticInita46f9641ddc96c236c39c0c1aeb4d2d2
         'Ramphor\\Slug\\Manager\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Jankx\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jankx/helpers/src/Helpers',
         ),
     );
 

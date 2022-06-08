@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Ramphor\\Slug\\Manager\\' => array($baseDir . '/src'),
+    'Jankx\\Helpers\\' => array($vendorDir . '/jankx/helpers/src/Helpers'),
 );
