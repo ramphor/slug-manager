@@ -11,7 +11,10 @@
             "email": "puleeno@gmail.com"
         }
     ],
-    "require": {},
+    "minimum-stability": "dev",
+    "require": {
+        "jankx/helpers": "dev-master"
+    },
     "config": {
         "vendor-dir": "packages"
     }

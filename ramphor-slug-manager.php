@@ -8,6 +8,10 @@
  * Tag: SEO, slug, URL
  */
 
+if (!defined('ABSPATH')) {
+    exit('Are you cheating huh?');
+}
+
 if (!defined('RAMPHOR_SLUG_MANAGER_PLUGIN_FILE')) {
     define('RAMPHOR_SLUG_MANAGER_PLUGIN_FILE', __FILE__);
 }
