@@ -15,7 +15,7 @@ class Installer
             'public' => true,
         ), 'objects');
 
-        array_filter($publicPostTypes, function ($args) {
+        $publicPostTypes = array_filter($publicPostTypes, function ($args) {
             return $args->rewrite !== false;
         });
 
@@ -35,7 +35,7 @@ class Installer
             'public' => true,
         ), 'objects');
 
-        array_filter($taxonomies, function ($args) {
+        $taxonomies = array_filter($taxonomies, function ($args) {
             return $args->rewrite !== false;
         });
 

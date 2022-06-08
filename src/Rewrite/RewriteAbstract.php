@@ -8,7 +8,9 @@ abstract class RewriteAbstract
     public function __construct($rules)
     {
         if (is_array($rules) && count($rules) > 0) {
-            $this->rules = $rules;
+            $this->rules = array_filter($rules, function ($rule) {
+                return $rule['rewrite'] == true;
+            });
         }
     }
 
