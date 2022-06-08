@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Ramphor\\Slug\\Remover\\' => array($baseDir . '/src'),
+    'Ramphor\\Slug\\Manager\\' => array($baseDir . '/src'),
 );

@@ -1,5 +1,5 @@
 <?php
-namespace Ramphor\Slug\Remover;
+namespace Ramphor\Slug\Manager;
 
 class Plugin
 {

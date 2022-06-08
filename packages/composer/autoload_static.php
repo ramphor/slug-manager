@@ -9,12 +9,12 @@ class ComposerStaticInita46f9641ddc96c236c39c0c1aeb4d2d2
     public static $prefixLengthsPsr4 = array (
         'R' => 
         array (
-            'Ramphor\\Slug\\Remover\\' => 21,
+            'Ramphor\\Slug\\Manager\\' => 21,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Ramphor\\Slug\\Remover\\' => 
+        'Ramphor\\Slug\\Manager\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

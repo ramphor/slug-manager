@@ -1,8 +1,8 @@
 {
-    "name": "ramphor/slug-remover",
+    "name": "ramphor/slug-manager",
     "autoload": {
         "psr-4": {
-            "Ramphor\\Slug\\Remover\\": "src/"
+            "Ramphor\\Slug\\Manager\\": "src/"
         }
     },
     "authors": [
