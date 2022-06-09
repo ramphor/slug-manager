@@ -59,13 +59,15 @@ class TaxonomyRewrite extends RewriteAbstract
     public function parseRequest($wp)
     {
         $error = isset($wp->query_vars['error']) && $wp->query_vars['error'] === '404';
-        if ($error || (isset($wp->request) && is_null(get_page_by_path($wp->request)))) {
-            $taxonomy = $this->matchingTaxonomyFromPageName('/' . $wp->request);
+        if ($error || (isset($wp->query_vars['pagename']) && is_null(get_page_by_path($wp->query_vars['pagename'])))) {
+            $rawSlug  = $error ? $wp->request : $wp->query_vars['pagename'];
+            $taxonomy = $this->matchingTaxonomyFromPageName('/' . $rawSlug);
+
             if ($taxonomy === false) {
                 return;
             }
 
-            $slug = $this->parseQuerySlug('/' . $wp->request, $taxonomy);
+            $slug = $this->parseQuerySlug('/' . $rawSlug, $taxonomy);
 
             $wp->query_vars[$taxonomy] = $slug;
             $wp->query[$taxonomy] = $slug;
