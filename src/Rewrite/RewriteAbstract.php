@@ -18,6 +18,16 @@ abstract class RewriteAbstract
 
     abstract public function rewrite();
 
+    protected function searchSlugOrPostNameIndex($formatArr)
+    {
+        foreach ($formatArr as $index => $format) {
+            if (preg_match('/\%(slug|postname)\%/', $format)) {
+                return $index;
+            }
+        }
+        return false;
+    }
+
 
     protected function parseQuerySlug($slug, $dataType)
     {
@@ -28,6 +38,9 @@ abstract class RewriteAbstract
         $formatArr = explode('/', ltrim($format, '/'));
         if (!$regex || count($formatArr) === 1 && $this->currentMatches) {
             return ltrim($slug, '/');
+        } elseif (count($formatArr) > 1) {
+            $index = $this->searchSlugOrPostNameIndex($formatArr);
+            return ltrim($this->currentMatches[$index], '/');
         }
 
         $slugArr = explode('/', $slug);

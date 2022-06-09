@@ -11,7 +11,7 @@ class TaxonomyRewrite extends RewriteAbstract
         $this->currentMatches = null;
 
         add_filter('term_link', [$this, 'customTermUrl'], 10, 3);
-        add_action('parse_request', [$this, 'parseRequest'], 10);
+        add_action('parse_request', [$this, 'parseRequest'], 30);
     }
 
     protected function getSlugFromTerm($term, $taxonomy)
@@ -70,7 +70,11 @@ class TaxonomyRewrite extends RewriteAbstract
             $slug = $this->parseQuerySlug('/' . $rawSlug, $taxonomy);
 
             $wp->query_vars[$taxonomy] = $slug;
-            $wp->query[$taxonomy] = $slug;
+            $wp->query[$taxonomy]      = $slug;
+            $wp->query['ramphor_slug'] = $slug;
+            $wp->ramphorCustomValue    = $slug;
+            $wp->ramphorCustomSlug     = true;
+            $wp->ramphorCustomKey      = $taxonomy;
 
             unset($wp->query_vars['pagename'], $wp->query['pagename'], $wp->query_vars['error']);
         }

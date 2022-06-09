@@ -51,11 +51,34 @@ class PostRewrite extends RewriteAbstract
             if (!isset($args['regex'])) {
                 continue;
             }
+
             if (preg_match($args['regex'], $slug, $this->currentMatches)) {
                 return $postType;
             }
         }
         return false;
+    }
+
+    protected function cleanCustomTaxonomyBefore(&$query, $key)
+    {
+        if (!isset($query->tax_query->queries) || !is_array($query->tax_query->queries)) {
+            return;
+        }
+        $queries = $query->tax_query->queries;
+        foreach ($query->tax_query->queries as $index => $args) {
+            if ($key === $args['taxonomy']) {
+                unset($queries[$index]);
+            }
+        }
+        $query->tax_query->queries = array_values($queries);
+        $query->tax_query->queried_terms = [];
+
+        $query->is_archive  = false;
+        $query->is_tax      = false;
+        $query->is_single   = true;
+        $query->is_singular = true;
+
+        unset($query->query[$key], $query->query_vars[$key]);
     }
 
     public function parseRequest($query)
@@ -65,13 +88,22 @@ class PostRewrite extends RewriteAbstract
             return;
         }
 
-        if (isset($query->query['pagename'])) {
-            $requestSlug = '/' . $query->query['pagename'];
+        global $wp;
+        if (!isset($wp->ramphorCustomSlug)) {
+            $wp->ramphorCustomSlug = false;
+        }
 
-            $postType = $this->matchingPostTypeFromSlug($requestSlug);
+        $error = isset($wp->query_vars['error']) && $wp->query_vars['error'] === '404';
+        if ($error || (isset($query->query['pagename']) || $wp->ramphorCustomSlug)) {
+            $requestSlug = '/' . $wp->request;
+            if ($wp->ramphorCustomSlug) {
+                $requestSlug = '/' . $wp->ramphorCustomValue;
+            }
+            $postType    = $this->matchingPostTypeFromSlug($requestSlug);
 
             if ($postType !== false) {
-                $slug = $this->parseQuerySlug($query->query['pagename'], $postType);
+                $slug = $this->parseQuerySlug($requestSlug, $postType);
+
                 $query->query[$postType]   = $slug;
                 $query->query['name']      = $slug;
                 $query->query['post_type'] = $postType;
@@ -80,8 +112,12 @@ class PostRewrite extends RewriteAbstract
                 $query->query_vars['name']      = $slug;
                 $query->query_vars['post_type'] = $postType;
 
+
+                if ($wp->ramphorCustomSlug) {
+                    $this->cleanCustomTaxonomyBefore($query, $wp->ramphorCustomKey);
+                }
                 // Unset page params
-                unset($query->query['pagename'], $query->query_vars['pagename']);
+                unset($query->query['pagename'], $query->query_vars['pagename'], $query->query['error'], $query->query_vars['error']);
             }
         }
     }
