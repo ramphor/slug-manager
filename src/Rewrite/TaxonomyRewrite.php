@@ -3,8 +3,13 @@ namespace Ramphor\Slug\Manager\Rewrite;
 
 class TaxonomyRewrite extends RewriteAbstract
 {
+    protected $currentMatches;
+
     public function rewrite()
     {
+        // Reset currentMatches
+        $this->currentMatches = null;
+
         add_filter('term_link', [$this, 'customTermUrl'], 10, 3);
         add_action('parse_request', [$this, 'parseRequest'], 10);
     }
@@ -44,7 +49,7 @@ class TaxonomyRewrite extends RewriteAbstract
                 continue;
             }
 
-            if (preg_match($rule['regex'], $pagename)) {
+            if (preg_match($rule['regex'], $pagename, $this->currentMatches)) {
                 return $taxonomy;
             }
         }
@@ -53,18 +58,19 @@ class TaxonomyRewrite extends RewriteAbstract
 
     public function parseRequest($wp)
     {
-        if (isset($wp->query_vars['pagename']) && is_null(get_page_by_path($wp->query_vars['pagename']))) {
-            $taxonomy = $this->matchingTaxonomyFromPageName('/' . $wp->query_vars['pagename']);
+        $error = isset($wp->query_vars['error']) && $wp->query_vars['error'] === '404';
+        if ($error || (isset($wp->request) && is_null(get_page_by_path($wp->request)))) {
+            $taxonomy = $this->matchingTaxonomyFromPageName('/' . $wp->request);
             if ($taxonomy === false) {
                 return;
             }
 
-            $slug = $this->parseQuerySlug($wp->query_vars['pagename'], $taxonomy);
+            $slug = $this->parseQuerySlug('/' . $wp->request, $taxonomy);
 
             $wp->query_vars[$taxonomy] = $slug;
             $wp->query[$taxonomy] = $slug;
 
-            unset($wp->query_vars['pagename'], $wp->query['pagename']);
+            unset($wp->query_vars['pagename'], $wp->query['pagename'], $wp->query_vars['error']);
         }
     }
 }

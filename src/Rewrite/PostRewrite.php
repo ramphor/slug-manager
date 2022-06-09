@@ -5,6 +5,8 @@ class PostRewrite extends RewriteAbstract
 {
     protected $rules;
 
+    protected $currentMatches;
+
     public function rewrite()
     {
         if (!$this->rules) {
@@ -49,7 +51,7 @@ class PostRewrite extends RewriteAbstract
             if (!isset($args['regex'])) {
                 continue;
             }
-            if (preg_match($args['regex'], $slug)) {
+            if (preg_match($args['regex'], $slug, $this->currentMatches)) {
                 return $postType;
             }
         }

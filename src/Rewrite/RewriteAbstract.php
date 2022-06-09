@@ -5,6 +5,8 @@ abstract class RewriteAbstract
 {
     protected $rules;
 
+    protected $currentMatches;
+
     public function __construct($rules)
     {
         if (is_array($rules) && count($rules) > 0) {
@@ -21,10 +23,14 @@ abstract class RewriteAbstract
     {
         $rule = $this->rules[$dataType];
         $format = array_get($rule, 'format');
+        $regex = array_get($rule, 'regex');
 
         $formatArr = explode('/', ltrim($format, '/'));
-        $slugArr = explode('/', $slug);
+        if (!$regex || count($formatArr) === 1 && $this->currentMatches) {
+            return ltrim($slug, '/');
+        }
 
+        $slugArr = explode('/', $slug);
         foreach ($formatArr as $index => $tag) {
             if (!preg_match('/\%[^\%]+\%/', $tag, $matches)) {
                 continue;
