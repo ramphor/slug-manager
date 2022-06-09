@@ -39,6 +39,8 @@ class Installer
             return $args->rewrite !== false;
         });
 
+        unset($taxonomies['category']);
+
         return apply_filters('ramphor/slug/manager/taxonomies', $taxonomies);
     }
 
