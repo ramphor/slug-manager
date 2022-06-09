@@ -22,7 +22,7 @@ class PostRewrite extends RewriteAbstract
         if (empty($post->post_parent)) {
             return $post->post_name;
         }
-        return sprintf('%s/%s', $post->post_name, $this->findPostName($post->post_parent));
+        return sprintf('%s/%s', $this->findPostName($post->post_parent), $post->post_name);
     }
 
     public function customPostUrl($post_link, $post, $leavename)

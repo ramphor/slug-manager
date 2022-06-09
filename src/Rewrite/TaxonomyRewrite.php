@@ -21,7 +21,7 @@ class TaxonomyRewrite extends RewriteAbstract
             return $term->slug;
         }
 
-        return sprintf('%s/%s', $term->slug, $this->getSlugFromTerm($term->parent, $taxonomy));
+        return sprintf('%s/%s', $this->getSlugFromTerm($term->parent, $taxonomy), $term->slug);
     }
 
     public function customTermUrl($url, $term, $taxonomy)
