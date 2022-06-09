@@ -55,6 +55,9 @@ class TaxonomyRewrite extends RewriteAbstract
     {
         if (isset($wp->query_vars['pagename']) && is_null(get_page_by_path($wp->query_vars['pagename']))) {
             $taxonomy = $this->matchingTaxonomyFromPageName('/' . $wp->query_vars['pagename']);
+            if ($taxonomy === false) {
+                return;
+            }
 
             $slug = $this->parseQuerySlug($wp->query_vars['pagename'], $taxonomy);
 
