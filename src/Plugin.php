@@ -94,8 +94,14 @@ class Plugin
     protected function convertUrlFormatToRegex($format)
     {
         $regex = str_replace(['/', '.'], ['\/', '\.'], $format);
-        $regex = preg_replace('/\%[^\%]+\%/', '[^\/]{1,}', $regex);
 
+        $regex = preg_replace('/\/\%(postname|slug)\%/', '(\/[^\/]*){1,}', $regex);
+        $regex = preg_replace('/\%[^\%]+\%/', '[^\/]{1,}', $regex);
+        if (strpos($regex, '\(\/') === 0) {
+            $regex = substr($regex, 1);
+        }
+
+        $regex = str_replace('\(', '(', $regex);
         $regex = '/^' . $regex;
 
         return $regex . '$/';

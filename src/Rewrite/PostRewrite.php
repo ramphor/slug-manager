@@ -56,24 +56,6 @@ class PostRewrite extends RewriteAbstract
         return false;
     }
 
-    protected function parseQuerySlug($slug, $postType)
-    {
-        $rule = $this->rules[$postType];
-        $format = array_get($rule, 'format');
-
-        $formatArr = explode('/', ltrim($format, '/'));
-        $slugArr = explode('/', $slug);
-
-        foreach ($formatArr as $index => $tag) {
-            if (!preg_match('/\%[^\%]+\%/', $tag, $matches)) {
-                continue;
-            }
-            $dirtyString = str_replace($matches[0], '', $tag);
-
-            return str_replace($dirtyString, '', $slugArr[$index]);
-        }
-    }
-
     public function parseRequest($query)
     {
         // Only support main query

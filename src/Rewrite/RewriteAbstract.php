@@ -15,4 +15,23 @@ abstract class RewriteAbstract
     }
 
     abstract public function rewrite();
+
+
+    protected function parseQuerySlug($slug, $dataType)
+    {
+        $rule = $this->rules[$dataType];
+        $format = array_get($rule, 'format');
+
+        $formatArr = explode('/', ltrim($format, '/'));
+        $slugArr = explode('/', $slug);
+
+        foreach ($formatArr as $index => $tag) {
+            if (!preg_match('/\%[^\%]+\%/', $tag, $matches)) {
+                continue;
+            }
+            $dirtyString = str_replace($matches[0], '', $tag);
+
+            return str_replace($dirtyString, '', $slugArr[$index]);
+        }
+    }
 }

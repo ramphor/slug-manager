@@ -58,6 +58,8 @@ class Installer
                 'priority' => $index,
             );
             $postTypeRules[$postType] = $rules;
+
+            $index += 1;
         }
 
         return $postTypeRules;
@@ -79,6 +81,8 @@ class Installer
                 'priority' => $index,
             );
             $taxonomyRules[$taxonomy] = $rules;
+
+            $index += 1;
         }
 
         return $taxonomyRules;
