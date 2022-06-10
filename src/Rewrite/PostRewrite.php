@@ -12,10 +12,8 @@ class PostRewrite extends RewriteAbstract
         if (!$this->rules) {
             return;
         }
-        if (!is_admin()) {
-            add_filter('post_type_link', array($this, 'customPostUrl'), 10, 2);
-        }
-        add_filter('get_sample_permalink', array($this, 'customSamePostUrl'), 10, 5);
+        add_filter('post_type_link', array($this, 'customPostUrl'), 10, 2);
+        add_filter('get_sample_permalink', array($this, 'customSamplePostUrl'), 10, 5);
         add_action('pre_get_posts', array($this, 'parseRequest'), 10);
     }
 
@@ -28,9 +26,15 @@ class PostRewrite extends RewriteAbstract
         return sprintf('%s/%s', $this->findPostName($post->post_parent), $post->post_name);
     }
 
-    public function customSamePostUrl($permalink, $postID, $title, $name, $post)
+    public function customSamplePostUrl($permalink, $postID, $title, $name, $post)
     {
-        return $this->customPostUrl($permalink, $post);
+        $rule = array_get($this->rules, $post->post_type);
+        $format = array_get($rule, 'format');
+
+        if (is_array($permalink)) {
+            $permalink[0] = site_url($format);
+        }
+        return $permalink;
     }
 
     public function customPostUrl($post_link, $post)
