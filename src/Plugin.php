@@ -48,9 +48,7 @@ class Plugin
         register_activation_hook(RAMPHOR_SLUG_MANAGER_PLUGIN_FILE, [Installer::class, 'active']);
         register_deactivation_hook(RAMPHOR_SLUG_MANAGER_PLUGIN_FILE, [Installer::class, 'deactive']);
 
-        if (wp_is_request('frontend')) {
-            add_action('init', [$this, 'rewrite'], 99);
-        }
+        add_action('init', [$this, 'rewrite'], 99);
         add_action('init', [$this, 'init'], 999);
     }
 
