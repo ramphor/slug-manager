@@ -1,6 +1,7 @@
 <?php
 namespace Ramphor\Slug\Manager;
 
+use Ramphor\Slug\Manager\ModuleManager;
 use Ramphor\Slug\Manager\Rewrite\PostRewrite;
 use Ramphor\Slug\Manager\Rewrite\TaxonomyRewrite;
 
@@ -20,6 +21,7 @@ class Plugin
     {
         $this->bootstrap();
         $this->initHooks();
+        $this->loadModules();
     }
 
     public static function instance()
@@ -146,5 +148,12 @@ class Plugin
             );
             $configWriter->write();
         }
+    }
+
+    public function loadModules()
+    {
+        $moduleManager = ModuleManager::getInstance();
+        $moduleManager->getActiveModules();
+        $moduleManager->loadModules();
     }
 }
