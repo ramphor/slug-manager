@@ -18,7 +18,7 @@ class Redirection extends Module
             if (site_url($wp->request) !== rtrim($link, '/')) {
                 wp_safe_redirect($link, 301, 'Ramphor Slug Manager');
             }
-        } elseif ($queried_object instanceof WP_Term) {
+        } elseif ($queried_object instanceof WP_Term && get_query_var('paged') <= 1) {
             $link = get_term_link($queried_object, $queried_object->taonomy);
             if (site_url($wp->request) !== rtrim($link, '/')) {
                 wp_safe_redirect($link, 301, 'Ramphor Slug Manager');
