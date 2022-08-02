@@ -115,7 +115,8 @@ class PostRewrite extends RewriteAbstract
             $postType    = $this->matchingPostTypeFromSlug($requestSlug);
 
             if ($postType !== false) {
-                $slug = $this->parseQuerySlug($requestSlug, $postType);
+                $slugArr = $this->parseQuerySlug($requestSlug, $postType);
+                $slug    = $slugArr[0];
 
                 $query->query[$postType]   = $slug;
                 $query->query['name']      = $slug;
