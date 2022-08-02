@@ -157,6 +157,8 @@ class TaxonomyRewrite extends RewriteAbstract
             $slug    = $slugArr[0];
             if (isset($slugArr[1]) && $slugArr[1] === 'page') {
                 $wp->query_vars['paged'] = isset($slugArr[2]) ? $slugArr[2] : 1;
+            } else {
+                $slug = implode('/', $slugArr);
             }
 
             $wp->query_vars[$taxonomy] = $slug;

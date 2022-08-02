@@ -116,7 +116,11 @@ class PostRewrite extends RewriteAbstract
 
             if ($postType !== false) {
                 $slugArr = $this->parseQuerySlug($requestSlug, $postType);
-                $slug    = $slugArr[0];
+                if (isset($slugArr[1]) && $slugArr[1] === 'page') {
+                    $wp->query_vars['paged'] = isset($slugArr[2]) ? $slugArr[2] : 1;
+                } else {
+                    $slug = implode('/', $slugArr);
+                }
 
                 $query->query[$postType]   = $slug;
                 $query->query['name']      = $slug;
