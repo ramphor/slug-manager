@@ -153,7 +153,11 @@ class TaxonomyRewrite extends RewriteAbstract
                 return;
             }
 
-            $slug = $this->parseQuerySlug('/' . $rawSlug, $taxonomy);
+            $slugArr = $this->parseQuerySlug('/' . $rawSlug, $taxonomy);
+            $slug    = $slugArr[0];
+            if (isset($slugArr[1]) && $slugArr[1] === 'page') {
+                $wp->query_vars['paged'] = isset($slugArr[2]) ? $slugArr[2] : 1;
+            }
 
             $wp->query_vars[$taxonomy] = $slug;
             $wp->query[$taxonomy]      = $slug;

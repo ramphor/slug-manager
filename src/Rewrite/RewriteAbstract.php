@@ -36,21 +36,23 @@ abstract class RewriteAbstract
         $regex = array_get($rule, 'regex');
 
         $formatArr = explode('/', ltrim($format, '/'));
+        $slugArr   = explode('/', $slug);
+
         if (!$regex || count($formatArr) === 1 && $this->currentMatches) {
-            return ltrim($slug, '/');
+            return explode('/', ltrim($slug, '/'));
         } elseif (count($formatArr) > 1) {
             $index = $this->searchSlugOrPostNameIndex($formatArr);
-            return ltrim($this->currentMatches[$index], '/');
+            return explode('/', ltrim($this->currentMatches[$index], '/'));
         }
 
-        $slugArr = explode('/', $slug);
         foreach ($formatArr as $index => $tag) {
             if (!preg_match('/\%[^\%]+\%/', $tag, $matches)) {
                 continue;
             }
             $dirtyString = str_replace($matches[0], '', $tag);
+            $dirtyString = str_replace($dirtyString, '', $slugArr[$index]);
 
-            return str_replace($dirtyString, '', $slugArr[$index]);
+            return explode('/', $dirtyString);
         }
     }
 }
